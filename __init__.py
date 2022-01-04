@@ -1,7 +1,11 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_apscheduler import APScheduler
 from os import path
+
+# app runs task after this many seconds to look for reminders and send texts
+TASK_INTERVAL = 20
 
 db = SQLAlchemy()
 db_name = "db.sqlite"
@@ -14,6 +18,8 @@ def create_app():
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
+    # ----------- login/auth
+
     login_manager = LoginManager()
     # redirects to this page if non-logged-in user tries to access profile
     login_manager.login_view = 'auth.login' 
@@ -23,15 +29,26 @@ def create_app():
     
     from .models import User
 
-    # what is this for
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
+
+    # ---------- database
 
     db.init_app(app)
     # create a new database if one doesn't exist
     if not path.exists(db_name):
         db.create_all(app=app)
+
+    # --------- apscheduler/time checking
+
+    scheduler = APScheduler()
+    scheduler.init_app(app)
+    scheduler.start()
+    from .textreminders import check_time
+
+    with app.app_context():
+        scheduler.add_job(id='checktime-id', func=check_time, trigger="interval", seconds=TASK_INTERVAL)
 
     # blueprint for user authentication routes of app
     from .auth import auth as auth_blueprint
@@ -42,3 +59,5 @@ def create_app():
     app.register_blueprint(main_blueprint)
 
     return app
+
+

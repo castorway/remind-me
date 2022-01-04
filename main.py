@@ -2,8 +2,7 @@ from flask import Blueprint, render_template, redirect, request, flash, session
 from flask_login import login_required, current_user
 from .models import Reminder
 from . import db
-from datetime import datetime, time
-import sys
+from datetime import datetime
 
 main = Blueprint('main', __name__)
 
@@ -59,3 +58,14 @@ def profile():
 
     else:
         return render_template('profile.html')
+
+@main.route('/test', methods=['GET', 'POST'])
+def test():
+    print("------------- the time is...", datetime.now(), flush=True)
+
+    now = datetime.now()
+    this_time = datetime(2021, 1, 1, hour=21, minute=2, second=0).time()
+
+    # filter by hour first
+    reminders = Reminder.query.filter_by(name="EEEEE")
+    print("got reminders happening now:", reminders.first(), flush=True)
