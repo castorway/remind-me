@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+<h1>Sign Up</h1>
+{% endblock %}
+
+{% block content %}
+
+<!-- signup boxes -->
+<div class="row px-2 gx-md-5">
+    <div class="col col-sm my-3">
+        welcome to dosagr trackw. We don't share your information i promise. lorem ipsum dolor sit amet
+    </div>
+
+    <div class="col col-sm 
+                bg-light
+                border rounded">
+        <form method="POST" action="/signup">
+            
+            <div class="mt-3 mb-2">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="email" placeholder="email@email.com"
+                    maxlength="100" required>
+            </div>
+
+            <div class="mb-2">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" placeholder="John Doe"
+                    maxlength="100">
+            </div>
+
+            <div class="mb-2">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password"
+                    minlength="5" maxlength="50" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password-confirm">Confirm Password</label>
+                <input type="password" class="form-control" name="password-confirm"
+                    minlength="5" maxlength="50" required>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
