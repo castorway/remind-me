@@ -1,1 +1,4 @@
-# remind-me
+Dependencies:
+* flask
+* flask-sqlalchemy
+* flask-login
