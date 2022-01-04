@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}
-<h1>Index Page :D</h1>
+<h1>Home</h1>
 {% endblock %}
 
+{% block content %}
+<div class="text-center">
+    <img id="rotating-logo" src="{{ url_for('static', filename='logo.svg') }}" width="250" height="250" class="d-inline-block align-text-top" alt="">
+</div>
+<div class="py-5">
+RemindMe is a website for easily setting and accessing regular reminders, which are sent to you by text. Makes it easy to schedule reminders by weekday and customize their contents. Enjoy!
+<br>
+Made by Castor Shem for an AlbertaSat Ground-Station Software Kickoff Project.
+</div>
+{% endblock %}
