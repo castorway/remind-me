@@ -2,10 +2,16 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_apscheduler import APScheduler
+from flask_twilio import Twilio
 from os import path
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+# load environment variables
+load_dotenv()
 
 # app runs task after this many seconds to look for reminders and send texts
-TASK_INTERVAL = 20
+TEXT_INTERVAL = 15
 
 db = SQLAlchemy()
 db_name = "db.sqlite"
@@ -40,16 +46,6 @@ def create_app():
     if not path.exists(db_name):
         db.create_all(app=app)
 
-    # --------- apscheduler/time checking
-
-    scheduler = APScheduler()
-    scheduler.init_app(app)
-    scheduler.start()
-    from .textreminders import check_time
-
-    with app.app_context():
-        scheduler.add_job(id='checktime-id', func=check_time, trigger="interval", seconds=TASK_INTERVAL)
-
     # blueprint for user authentication routes of app
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
@@ -57,6 +53,21 @@ def create_app():
     # blueprint for dosage tracker parts of app
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    # --------- apscheduler/time checking
+
+    scheduler = APScheduler()
+    scheduler.init_app(app)
+    scheduler.start()
+
+    from .textreminders import send_reminders
+
+    def send_reminders_job():
+        send_reminders(scheduler)
+
+    scheduler.add_job(id='send reminders', func=send_reminders_job, trigger='interval', seconds=TEXT_INTERVAL)
+    
+
 
     return app
 

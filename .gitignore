@@ -1,2 +1,4 @@
 __pycache__
 templates_old
+.env
+testing.py

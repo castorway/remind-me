@@ -13,10 +13,8 @@ def index():
 @main.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    print("dhsjfhdsjfasd", flush=True)
     
     if request.method == 'POST':
-        print("posted", request, flush=True)
 
         # button from form to add new reminder
         if 'add' in request.form:
@@ -35,9 +33,10 @@ def profile():
                 hour = 0
             elif am_pm == 'PM' and hour != 12:
                 hour = hour + 12
-            dtime = datetime(2021, 1, 1, hour=hour, minute=minute).time()
+            time_now = datetime(2021, 1, 1, hour=hour, minute=minute).time()
+            time_old = datetime(2021, 1, 1).date()
 
-            reminder = Reminder(name=name, dosage=dosage, notes=notes, time=dtime, timestring=timestring, user=current_user)
+            reminder = Reminder(name=name, dosage=dosage, notes=notes, time=time_now, lastnotif=time_old, timestring=timestring, user=current_user)
             db.session.add(reminder)
             db.session.commit()
 
@@ -58,14 +57,3 @@ def profile():
 
     else:
         return render_template('profile.html')
-
-@main.route('/test', methods=['GET', 'POST'])
-def test():
-    print("------------- the time is...", datetime.now(), flush=True)
-
-    now = datetime.now()
-    this_time = datetime(2021, 1, 1, hour=21, minute=2, second=0).time()
-
-    # filter by hour first
-    reminders = Reminder.query.filter_by(name="EEEEE")
-    print("got reminders happening now:", reminders.first(), flush=True)

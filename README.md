@@ -12,4 +12,5 @@ Made for an AlbertaSat Ground-Station Software Kickoff Project.
 * flask-apscheduler
 
 ## To Do:
+* Support SMS messaging
 * Support different time zones

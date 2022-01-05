@@ -4,9 +4,11 @@ from . import db
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100))
-    name = db.Column(db.String(100))
+    email = db.Column(db.String(100), unique=True, default="")
+    password = db.Column(db.String(100), default="")
+    name = db.Column(db.String(100), default="")
+    phone = db.Column(db.String(100), default="")
+    discord = db.Column(db.String(100), default="")
     
     # create user-to-reminders relationship
     reminders = db.relationship('Reminder', back_populates='user')
@@ -15,11 +17,12 @@ class User(UserMixin, db.Model):
 class Reminder(db.Model):
     __tablename__ = 'reminder'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    notes = db.Column(db.String(200))
-    dosage = db.Column(db.String(100))
+    name = db.Column(db.String(100), default="")
+    notes = db.Column(db.String(200), default="")
+    dosage = db.Column(db.String(100), default="")
     time = db.Column(db.Time)
-    timestring = db.Column(db.String(100))
+    timestring = db.Column(db.String(100), default="")
+    lastnotif = db.Column(db.Date)
 
     # create reminder-to-user relationship
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
