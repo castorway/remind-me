@@ -1,6 +1,5 @@
 # RemindMe
-
-A website for easily setting and accessing reminders, with authentication and SMS notifications.
+A website for setting regular reminders, with authentication and SMS notifications.
 
 Made for an AlbertaSat Ground-Station Software Kickoff Project.
 
