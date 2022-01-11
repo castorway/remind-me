@@ -6,7 +6,12 @@
 
 {% block column_left %}
 <div class="row mb-3 px-1">
-lorem ipsum dolor sit amet
+<p class="px-0">
+    Signing up with a phone number is optional, but we can't send you reminders without a phone number.
+</p>
+<p class="px-0">
+    Password must be at least 5 characters long.
+</p>
 </div>
 {% endblock %}
 
@@ -24,6 +29,22 @@ lorem ipsum dolor sit amet
             <label for="name">Name</label>
             <input type="text" class="form-control" name="name" placeholder="John Doe"
                 maxlength="100">
+        </div>
+
+        <label for="phone">Phone Number <span style="color:gray;">(Optional) (e.g. 0123456789)</style></label>
+        <div class="input-group mb-2">
+            <span class="input-group-text">+1</span>
+            <input type="tel" class="form-control" name="phone" placeholder="0123456789"
+                pattern="[0-9]{10}" maxlength="10">
+        </div>
+
+        <label for="discord">Discord <span style="color:gray;">(Optional) (e.g. User#1234)</style></label>
+        <div class="input-group mb-2">
+            <input type="text" class="form-control" name="discord-name" placeholder="User"
+                maxlength="100">
+            <span class="input-group-text">#</span>
+            <input type="text" class="form-control" name="discord-tag" placeholder="1111"
+                pattern="[0-9]{4}" maxlength="4">
         </div>
 
         <div class="mb-2">

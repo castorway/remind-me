@@ -46,6 +46,9 @@ def signup():
 
         # validate and add user to database
         email = request.form.get('email')
+        phone = request.form.get('phone')
+        discord_name = request.form.get('discord-name')
+        discord_tag = request.form.get('discord-tag')
         name = request.form.get('name')
         password = request.form.get('password')
         password_confirm = request.form.get('password-confirm')
@@ -62,12 +65,22 @@ def signup():
             # send message to next request (redirect)
             flash('A user already exists with this email.', category="warning")
             return redirect(url_for('auth.signup'))
+        
+        # format phone and discord
+        if phone:
+            phone = "+1" + phone
+        
+        discord = ""
+        if discord_name and discord_tag:
+            discord = discord_name + "#" + discord_tag
 
         # create new user with hashed password
-        new_user = User(email=email, name=name, password=generate_password_hash(password, "sha256"))
+        new_user = User(email=email, name=name, 
+            phone=phone, discord=discord, 
+            password=generate_password_hash(password, "sha256"))
 
         # add new user to database
-        print(f"Adding user with email {email}, name: {name}, password: {password}")
+        print(f"Adding user with email {email}, name: {name}, password: {password}, phone: {phone}, discord: {discord}")
         db.session.add(new_user)
         db.session.commit()
 
